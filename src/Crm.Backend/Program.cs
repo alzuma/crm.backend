@@ -1,12 +1,12 @@
-using Crm.Backend.Application;
 using Crm.Backend.Endpoints;
 using Crm.Backend.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-builder.Services.AddScoped<ISampleService, SampleService>();
-builder.Services.AddSingleton<ISampleRepository, InMemorySampleRepository>();
+builder.Services.AddDbContext<CrmDbContext>((sp, options) =>
+    options.UseSqlite(sp.GetRequiredService<IConfiguration>().GetConnectionString("Default")));
 
 var app = builder.Build();
 
@@ -18,7 +18,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 HealthEndpoints.Map(app);
-SampleEndpoints.Map(app);
 
 app.Run();
 
