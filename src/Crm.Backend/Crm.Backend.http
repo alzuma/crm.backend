@@ -1,0 +1,19 @@
+@Crm.Backend_HostAddress = http://localhost:5080
+
+GET {{Crm.Backend_HostAddress}}/health/live
+Accept: application/json
+
+###
+
+POST {{Crm.Backend_HostAddress}}/api/v1/samples
+Content-Type: application/json
+
+{
+  "name": "Acme",
+  "quantity": 3
+}
+
+###
+
+GET {{Crm.Backend_HostAddress}}/api/v1/samples
+Accept: application/json
